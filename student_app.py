@@ -1,4 +1,8 @@
 import streamlit as st
+
+st.set_page_config(page_title="UConn Syllabus Assistant", layout="wide")
+st.title("📘 AI-Powered Syllabus Assistant for UConn School of Business")
+
 from openai import OpenAI
 import pandas as pd
 import uuid
@@ -61,8 +65,8 @@ def log_message(role, message):
 
 # ========== Main App ==========
 def run_app_ui():
-    st.set_page_config(page_title="UConn Syllabus Assistant", layout="wide")
-    st.title("📘 AI-Powered Syllabus Assistant for UConn School of Business")
+
+    s
 
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
