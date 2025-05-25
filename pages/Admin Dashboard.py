@@ -74,3 +74,13 @@ st.download_button(
     file_name=f"{selected_email.replace('@','_')}_chatlog.csv",
     mime="text/csv"
 )
+
+# ========= Download All Conversations =========
+st.divider()
+csv_all = df.to_csv(index=False).encode("utf-8")
+st.download_button(
+    label="📦 Download ALL Conversations (All Users)",
+    data=csv_all,
+    file_name="all_chat_logs.csv",
+    mime="text/csv"
+)
