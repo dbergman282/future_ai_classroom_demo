@@ -128,18 +128,6 @@ def run_app_ui():
 
         st.divider()
 
-        # ========== Optional Admin Console ==========
-        if st.session_state.get("logged_in") and st.session_state.get("info_submitted"):
-            with st.expander("⚙️ Home Admin Console", expanded=False):
-                st.markdown("This is a debug/admin panel for session details.")
-                st.markdown(f"- 👤 **User:** `{st.session_state.get('user_name', 'N/A')}`")
-                st.markdown(f"- 📧 **Email:** `{st.session_state.get('user_email', 'N/A')}`")
-                st.markdown(f"- 🆔 **Session ID:** `{st.session_state.get('session_id', 'N/A')}`")
-
-                if st.button("🧹 Clear Session State"):
-                    for key in list(st.session_state.keys()):
-                        del st.session_state[key]
-                    st.success("Session state cleared. Please refresh.")
 
 # ========== Entry Point ==========
 def main():
