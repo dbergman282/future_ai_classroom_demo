@@ -1,6 +1,11 @@
 import streamlit as st
 
-st.set_page_config(page_title="UConn Syllabus Assistant", layout="wide")
+#st.set_page_config(page_title="UConn Syllabus Assistant", layout="wide")
+st.set_page_config(
+    page_title="UConn Syllabus Assistant",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 st.title("📘 AI-Powered Syllabus Assistant for UConn School of Business")
 
 from openai import OpenAI
