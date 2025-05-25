@@ -66,7 +66,6 @@ def log_message(role, message):
 # ========== Main App ==========
 def run_app_ui():
 
-    s
 
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
