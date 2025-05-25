@@ -32,6 +32,7 @@ def load_logs():
 # ========= Refresh Button =========
 if st.button("🔁 Refresh Log View"):
     st.cache_data.clear()
+    st.rerun()
 
 df = load_logs()
 
@@ -52,7 +53,7 @@ with st.expander("🗑️ Delete User Chat History", expanded=False):
         conn.close()
         st.success(f"Deleted all chat messages for `{selected_delete_email}`.")
         st.cache_data.clear()
-        st.experimental_rerun()
+        st.rerun()
 
 # ========= Select and View User =========
 user_emails = sorted(df["email"].unique())
