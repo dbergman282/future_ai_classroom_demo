@@ -78,16 +78,23 @@ def log_message(role, message):
     conn.commit()
     conn.close()
     try:
-        supabase.table("messages").insert({
-            "timestamp": datetime.now().isoformat(),
-            "session_id": st.session_state.session_id,
-            "name": st.session_state.user_name,
-            "email": st.session_state.user_email,
+        payload = {
+            "timestamp": datetime.now(timezone.utc).isoformat(),  # Correct for timestamptz
+            "session_id": str(st.session_state.session_id),
+            "name": st.session_state.user_name or "",
+            "email": st.session_state.user_email or "",
             "role": role,
             "message": message
-        }).execute()
+        }
+
+        # Send to Supabase
+        response = supabase.table("messages").insert(payload).execute()
+
+        # Optional: check response
+        if hasattr(response, "status_code") and response.status_code >= 400:
+            st.warning(f"Supabase error: {response.data}")
     except Exception as e:
-        st.warning(f"Could not log to Supabase: {e}")
+        st.warning(f"⚠️ Supabase logging failed: {e}")
 
 # ========== Main App ==========
 def run_app_ui():
