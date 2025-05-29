@@ -1,8 +1,9 @@
 import streamlit as st
-import sqlite3
 import pandas as pd
-import os
+from supabase import create_client
+from datetime import datetime
 
+# ========= Page Setup =========
 st.set_page_config(page_title="Admin Dashboard", layout="wide")
 st.title("📊 Admin Dashboard – View Faculty Chat Logs")
 
@@ -14,19 +15,23 @@ with st.sidebar:
         st.warning("Enter the correct admin password to view logs.")
         st.stop()
 
-# ========= Database Path and Refresh =========
-DB_PATH = "chat_log.db"
+# ========= Supabase Setup =========
+@st.cache_resource
+def init_supabase():
+    url = st.secrets["SUPABASE_URL"]
+    key = st.secrets["SUPABASE_ANON_KEY"]
+    return create_client(url, key)
 
-if not os.path.exists(DB_PATH):
-    st.info("The chat log database has not been created yet.")
-    st.stop()
+supabase = init_supabase()
 
-# ========= Load Logs (function) =========
+# ========= Load Logs =========
 @st.cache_data(show_spinner=False)
 def load_logs():
-    conn = sqlite3.connect(DB_PATH, check_same_thread=False)
-    df = pd.read_sql("SELECT * FROM messages ORDER BY timestamp ASC", conn)
-    conn.close()
+    response = supabase.table("records_demo").select("*").order("timestamp", desc=False).execute()
+    data = response.data
+    if not data:
+        return pd.DataFrame()
+    df = pd.DataFrame(data)
     return df
 
 # ========= Refresh Button =========
@@ -40,6 +45,7 @@ if df.empty:
     st.info("No chat logs found yet.")
     st.stop()
 
+# Filter out entries with no email
 df = df[df["email"].notnull() & (df["email"] != "")]
 
 # ========= Delete User Interface =========
@@ -47,10 +53,8 @@ with st.expander("🗑️ Delete User Chat History", expanded=False):
     delete_emails = sorted(df["email"].unique())
     selected_delete_email = st.selectbox("Select a user to delete:", delete_emails, key="delete_user")
     if st.button("🚨 Delete This User's Chat History"):
-        conn = sqlite3.connect(DB_PATH, check_same_thread=False)
-        conn.execute("DELETE FROM messages WHERE email = ?", (selected_delete_email,))
-        conn.commit()
-        conn.close()
+        # Delete all rows where email matches
+        supabase.table("records_demo").delete().eq("email", selected_delete_email).execute()
         st.success(f"Deleted all chat messages for `{selected_delete_email}`.")
         st.cache_data.clear()
         st.rerun()
@@ -65,7 +69,7 @@ for _, row in user_df.iterrows():
     with st.chat_message(row["role"]):
         st.markdown(row["message"])
 
-# ========= Download Button =========
+# ========= Download This User =========
 st.divider()
 csv = user_df.to_csv(index=False).encode("utf-8")
 st.download_button(
@@ -75,7 +79,7 @@ st.download_button(
     mime="text/csv"
 )
 
-# ========= Download All Conversations =========
+# ========= Download All Users =========
 st.divider()
 csv_all = df.to_csv(index=False).encode("utf-8")
 st.download_button(
