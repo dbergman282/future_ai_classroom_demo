@@ -88,7 +88,7 @@ def run_app_ui():
         with st.form(key="user_info_form"):
             st.session_state.user_name = st.text_input("Your name")
             st.session_state.user_email = st.text_input("Your UConn email")
-            submit = st.form_submit_button("Start Building My Syllabus")
+            submit = st.form_submit_button("Start Building My Case Study")
 
             if submit and st.session_state.user_name and st.session_state.user_email:
                 st.session_state.info_submitted = True
@@ -96,17 +96,18 @@ def run_app_ui():
                     {
                         "role": "system",
                         "content": (
-                            "You are an AI assistant helping UConn School of Business faculty create a syllabus. "
-                            "Ask questions step-by-step to collect: course title, level, goals, grading, schedule, and policies. "
+                            "You are an AI assistant helping UConn School of Business faculty create a case study based on a newstory in 2023. "
+                            "Ask questions step-by-step to collect information about the class."
                             "Be conversational and helpful. Ask follow-up questions if answers are vague or incomplete. "
-                            "Encourage inclusion of compliance, sexual harassment, ADA, and academic integrity policies."
+                            "Encourage a selection of a high-impact news story that is relevant to the class material."
+                            "Ask whatever you need."
                         )
                     }
                 ]
                 st.rerun()
 
     if st.session_state.info_submitted:
-        st.markdown(f"**Welcome, {st.session_state.user_name}!** Let's build your syllabus.")
+        st.markdown(f"**Welcome, {st.session_state.user_name}!** Let's build your case study.")
 
         for msg in st.session_state.messages:
             if msg["role"] != "system":
