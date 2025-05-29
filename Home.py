@@ -51,52 +51,22 @@ def require_login():
             st.stop()
 
 # ========== Logging Helper ==========
+
 def log_message(role, message):
-    conn = sqlite3.connect("chat_log.db", check_same_thread=False)
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS messages (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp TEXT,
-            session_id TEXT,
-            name TEXT,
-            email TEXT,
-            role TEXT,
-            message TEXT
-        )
-    """)
-    cursor.execute("""
-        INSERT INTO messages (timestamp, session_id, name, email, role, message)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (
-        datetime.now().isoformat(),
-        st.session_state.session_id,
-        st.session_state.user_name,
-        st.session_state.user_email,
-        role,
-        message
-    ))
-    conn.commit()
-    conn.close()
-    payload = {
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "session_id": str(st.session_state.session_id),
-        "name": st.session_state.user_name or "",
-        "email": st.session_state.user_email or "",
-        "role": role,
-        "message": message
-    }
-
-    st.write("🧪 Supabase payload:", payload)  # Debug output
-
-    # --- Try logging to Supabase ---
     try:
-        response = supabase.table("records_demo").insert(payload).execute()
-        st.write("✅ Supabase response:", response)
-    except Exception as e:
-        import traceback
-        st.error("❌ Supabase logging failed")
-        st.text(traceback.format_exc())
+        payload = {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "session_id": str(st.session_state.session_id),
+            "name": st.session_state.user_name or "",
+            "email": st.session_state.user_email or "",
+            "role": role,
+            "message": message
+        }
+
+        supabase.table("records_demo").insert(payload).execute()
+
+    except Exception:
+        st.error("ERROR: This is an error. Call David over.")
 
 # ========== Main App ==========
 def run_app_ui():
