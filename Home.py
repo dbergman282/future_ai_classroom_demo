@@ -14,6 +14,7 @@ import pandas as pd
 import uuid
 import sqlite3
 from datetime import datetime
+from supabase import create_client, Client
 
 # ========== Secure Login ==========
 def require_login():
