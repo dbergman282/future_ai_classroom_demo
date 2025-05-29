@@ -2,11 +2,12 @@ import streamlit as st
 
 #st.set_page_config(page_title="UConn Syllabus Assistant", layout="wide")
 st.set_page_config(
-    page_title="UConn Syllabus Assistant",
+    page_title="Case Study Assistant",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
-st.title("📘 AI-Powered Syllabus Assistant for UConn School of Business")
+st.title("📘 AI-Powered Case Study Assistant for UConn School of Business")
+st.markdown("Login, and work with this AI to create a new case for one of your classes next year based on a newstory from 2023.")
 
 from openai import OpenAI
 import pandas as pd
