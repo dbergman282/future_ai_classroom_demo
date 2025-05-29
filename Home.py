@@ -16,6 +16,14 @@ import sqlite3
 from datetime import datetime
 from supabase import create_client, Client
 
+@st.cache_resource
+def init_supabase():
+    url = st.secrets["SUPABASE_URL"]
+    key = st.secrets["SUPABASE_ANON_KEY"]
+    return create_client(url, key)
+
+supabase = init_supabase()
+
 # ========== Secure Login ==========
 def require_login():
     if "logged_in" not in st.session_state:
@@ -69,6 +77,17 @@ def log_message(role, message):
     ))
     conn.commit()
     conn.close()
+    try:
+        supabase.table("messages").insert({
+            "timestamp": datetime.now().isoformat(),
+            "session_id": st.session_state.session_id,
+            "name": st.session_state.user_name,
+            "email": st.session_state.user_email,
+            "role": role,
+            "message": message
+        }).execute()
+    except Exception as e:
+        st.warning(f"Could not log to Supabase: {e}")
 
 # ========== Main App ==========
 def run_app_ui():
