@@ -7,7 +7,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 st.title("📘 AI-Powered Case Study Assistant for UConn School of Business")
-st.markdown("Login, and work with this AI to create a new case for one of your classes next year based on a newstory from 2023.")
+st.markdown("Login, and work with this AI to create a new case for one of your classes next year based on a newstory from 2023. Note that your convesation will be recorded and continuing with this demo confirms that you are aware of this.")
 
 from openai import OpenAI
 import pandas as pd
