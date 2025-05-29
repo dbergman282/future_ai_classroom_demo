@@ -7,7 +7,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 st.title("📘 AI-Powered Case Study Assistant for UConn School of Business")
-st.markdown("Login, and work with this AI to create a new case for one of your classes next year based on a newstory from 2023. Note that your convesation will be recorded and continuing with this demo confirms that you are aware of this.")
+st.markdown("Login, and work with this AI to create a new case for one of your classes next year based on a news story. Note that your convesation will be recorded and continuing with this demo confirms that you are aware of this.")
 
 from openai import OpenAI
 import pandas as pd
@@ -95,11 +95,9 @@ def run_app_ui():
                     {
                         "role": "system",
                         "content": (
-                            "You are an AI assistant helping UConn School of Business faculty create a case study based on a newstory in 2023. "
-                            "Ask questions step-by-step to collect information about the class."
-                            "Be conversational and helpful. Ask follow-up questions if answers are vague or incomplete. "
-                            "Encourage a selection of a high-impact news story that is relevant to the class material."
-                            "Ask whatever you need."
+                            "You are an AI assistant helping UConn School of Business faculty create a case for a class. "
+                            "You need to bring them to do the following: Define learning objectives. help them find a context that is particularly salient to wrestling with the key isuses that will bring out undersatnding of the learning objectives."
+                            "Force the user to define the learning objectives. "
                         )
                     }
                 ]
