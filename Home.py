@@ -91,7 +91,7 @@ def log_message(role, message):
 
     # --- Try logging to Supabase ---
     try:
-        response = supabase.table("messages").insert(payload).execute()
+        response = supabase.table("records_demo").insert(payload).execute()
         st.write("✅ Supabase response:", response)
     except Exception as e:
         import traceback
