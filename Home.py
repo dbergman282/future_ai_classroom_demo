@@ -6,7 +6,14 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
-st.image("MAESTRO_logo.png", width=200)
+col1, col2, col3 = st.columns([1, 2, 1])
+
+with col1:
+    st.empty()
+with col2:
+    st.image("MAESTRO_logo.png", width=200)
+with col3:
+    st.empty()
 st.title("📘 AI-Powered Case Study Assistant for UConn School of Business Faculty Retreat")
 st.markdown("Login, and work with this AI to create a new case for one of your classes next year based on a news story. Note that your convesation will be recorded and continuing with this demo confirms that you are aware of this.")
 
