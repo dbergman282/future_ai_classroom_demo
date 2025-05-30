@@ -7,7 +7,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 st.markdown(
-    "<div style='text-align: center;'><img src='uconn_logo.png' width='200'></div>",
+    "<div style='text-align: center;'><img src='MAESTRO_logo.png' width='200'></div>",
     unsafe_allow_html=True
 )
 st.title("📘 AI-Powered Case Study Assistant for UConn School of Business Faculty Retreat")
